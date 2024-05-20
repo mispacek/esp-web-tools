@@ -112,7 +112,7 @@ export class EwtInstallDialog extends LitElement {
       if (this._error) {
         [heading, content] = this._renderError(this._error);
       } else {
-        content = this._renderProgress("Connecting");
+        content = this._renderProgress("Připojování");
       }
     } else if (this._state === "INSTALL") {
       [heading, content, allowClosing] = this._renderInstall();
@@ -161,7 +161,7 @@ export class EwtInstallDialog extends LitElement {
   }
 
   _renderError(label: string): [string, TemplateResult] {
-    const heading = "Error";
+    const heading = "Chyba";
     const content = html`
       <ewt-page-message
         slot="content"
@@ -169,7 +169,7 @@ export class EwtInstallDialog extends LitElement {
         .label=${label}
       ></ewt-page-message>
       <div slot="actions">
-        <ew-text-button @click=${this._closeDialog}>Close</ew-text-button>
+        <ew-text-button @click=${this._closeDialog}>Zavřít</ew-text-button>
       </div>
     `;
     return [heading, content];
@@ -207,7 +207,7 @@ export class EwtInstallDialog extends LitElement {
                   ${listItemInstallIcon}
                   <div slot="headline">
                     ${!this._isSameFirmware
-                      ? `Install ${this._manifest.name}`
+                      ? `Nainstalovat ${this._manifest.name}`
                       : `Update ${this._manifest.name}`}
                   </div>
                 </ew-list-item>
@@ -270,7 +270,7 @@ export class EwtInstallDialog extends LitElement {
             }}
           >
             ${listItemConsole}
-            <div slot="headline">Logs & Console</div>
+            <div slot="headline">Logy a Konzole</div>
           </ew-list-item>
           ${this._isSameFirmware && this._manifest.funding_url
             ? html`
@@ -290,7 +290,7 @@ export class EwtInstallDialog extends LitElement {
                   class="danger"
                   @click=${() => this._startInstall(true)}
                 >
-                  <div slot="headline">Erase User Data</div>
+                  <div slot="headline">Vymazat uživatelská data</div>
                 </ew-list-item>
               `
             : ""}
@@ -320,7 +320,7 @@ export class EwtInstallDialog extends LitElement {
             }}
           >
             ${listItemInstallIcon}
-            <div slot="headline">${`Install ${this._manifest.name}`}</div>
+            <div slot="headline">${`Instalovat ${this._manifest.name}`}</div>
           </ew-list-item>
           <ew-list-item
             type="button"
@@ -331,7 +331,7 @@ export class EwtInstallDialog extends LitElement {
             }}
           >
             ${listItemConsole}
-            <div slot="headline">Logs & Console</div>
+            <div slot="headline">Logy a Konzole</div>
           </ew-list-item>
         </ew-list>
       </div>
@@ -519,7 +519,7 @@ export class EwtInstallDialog extends LitElement {
               this._state = "DASHBOARD";
             }}
           >
-            ${this._installState && this._installErase ? "Skip" : "Back"}
+            ${this._installState && this._installErase ? "Přeskočit" : "Zpět"}
           </ew-text-button>
           <ew-text-button @click=${this._doProvision}>Connect</ew-text-button>
         </div>
@@ -529,12 +529,12 @@ export class EwtInstallDialog extends LitElement {
   }
 
   _renderAskErase(): [string | undefined, TemplateResult] {
-    const heading = "Erase device";
+    const heading = "Vymazat paměť zařízení ?";
     const content = html`
       <div slot="content">
         <div>
-          Do you want to erase the device before installing
-          ${this._manifest.name}? All data on the device will be lost.
+          Opravdu chcete zařízení před instalací
+          ${this._manifest.name}? vymazat ? Všechna data v zařízení budou vymazána.
         </div>
         <label class="formfield">
           <ew-checkbox touch-target="wrapper" class="danger"></ew-checkbox>
@@ -547,7 +547,7 @@ export class EwtInstallDialog extends LitElement {
             this._state = "DASHBOARD";
           }}
         >
-          Back
+          Zpět
         </ew-text-button>
         <ew-text-button
           @click=${() => {
@@ -555,7 +555,7 @@ export class EwtInstallDialog extends LitElement {
             this._startInstall(checkbox.checked);
           }}
         >
-          Next
+          Další
         </ew-text-button>
       </div>
     `;
@@ -571,11 +571,10 @@ export class EwtInstallDialog extends LitElement {
     const isUpdate = !this._installErase && this._isSameFirmware;
 
     if (!this._installConfirmed && this._isSameVersion) {
-      heading = "Erase User Data";
+      heading = "Vymazat uživatelská data?";
       content = html`
         <div slot="content">
-          Do you want to reset your device and erase all user data from your
-          device?
+          Chcete resetovat zařízení a vymazat všechna uživatelská data ze zařízení?
         </div>
         <div slot="actions">
           <ew-text-button class="danger" @click=${this._confirmInstall}>
@@ -584,18 +583,18 @@ export class EwtInstallDialog extends LitElement {
         </div>
       `;
     } else if (!this._installConfirmed) {
-      heading = "Confirm Installation";
-      const action = isUpdate ? "update to" : "install";
+      heading = "Potvrzení instalace";
+      const action = isUpdate ? "updatovat" : "nainstalovat";
       content = html`
         <div slot="content">
           ${isUpdate
             ? html`Your device is running
                 ${this._info!.firmware}&nbsp;${this._info!.version}.<br /><br />`
             : ""}
-          Do you want to ${action}
+          Opravdu chcete ${action}
           ${this._manifest.name}&nbsp;${this._manifest.version}?
           ${this._installErase
-            ? html`<br /><br />All data on the device will be erased.`
+            ? html`<br /><br />Všechna data budou ze zařízení vymazána!`
             : ""}
         </div>
         <div slot="actions">
@@ -604,10 +603,10 @@ export class EwtInstallDialog extends LitElement {
               this._state = "DASHBOARD";
             }}
           >
-            Back
+            Zpět
           </ew-text-button>
           <ew-text-button @click=${this._confirmInstall}>
-            Install
+            Nainstalovat
           </ew-text-button>
         </div>
       `;
@@ -616,11 +615,11 @@ export class EwtInstallDialog extends LitElement {
       this._installState.state === FlashStateType.INITIALIZING ||
       this._installState.state === FlashStateType.PREPARING
     ) {
-      heading = "Installing";
-      content = this._renderProgress("Preparing installation");
+      heading = "Instaluji";
+      content = this._renderProgress("Připravuji instalaci");
     } else if (this._installState.state === FlashStateType.ERASING) {
-      heading = "Installing";
-      content = this._renderProgress("Erasing");
+      heading = "Instaluji";
+      content = this._renderProgress("Mažu paměť");
     } else if (
       this._installState.state === FlashStateType.WRITING ||
       // When we're finished, keep showing this screen with 100% written
@@ -628,15 +627,15 @@ export class EwtInstallDialog extends LitElement {
       (this._installState.state === FlashStateType.FINISHED &&
         this._client === undefined)
     ) {
-      heading = "Installing";
+      heading = "Instaluji";
       let percentage: number | undefined;
       let undeterminateLabel: string | undefined;
       if (this._installState.state === FlashStateType.FINISHED) {
         // We're done writing and detecting improv, show spinner
-        undeterminateLabel = "Wrapping up";
+        undeterminateLabel = "Dokončování instalace";
       } else if (this._installState.details.percentage < 4) {
         // We're writing the firmware under 4%, show spinner or else we don't show any pixels
-        undeterminateLabel = "Installing";
+        undeterminateLabel = "Instaluji";
       } else {
         // We're writing the firmware over 4%, show progress bar
         percentage = this._installState.details.percentage;
@@ -645,11 +644,11 @@ export class EwtInstallDialog extends LitElement {
         html`
           ${undeterminateLabel ? html`${undeterminateLabel}<br />` : ""}
           <br />
-          This will take
+          Počkejte
           ${this._installState.chipFamily === "ESP8266"
-            ? "a minute"
-            : "2 minutes"}.<br />
-          Keep this page visible to prevent slow down
+            ? "přibližně minutu"
+            : "přibližně 2 minuty"}.<br />
+          Nezavírejte prosím tuto stránku, dokud se instalace nedokončí.
         `,
         percentage,
       );
@@ -660,10 +659,11 @@ export class EwtInstallDialog extends LitElement {
         <ewt-page-message
           slot="content"
           .icon=${OK_ICON}
-          label="Installation complete!"
+          label="Instalace úspěšně dokončena!"
         ></ewt-page-message>
 
         <div slot="actions">
+
           <ew-text-button
             @click=${() => {
               this._state =
@@ -672,12 +672,18 @@ export class EwtInstallDialog extends LitElement {
                   : "DASHBOARD";
             }}
           >
-            Next
+            Zavřít
           </ew-text-button>
+          
+          <ew-text-button onclick="location.href='conf.html';">
+          Nastavit zařízení
+          </ew-text-button>
+          
+          
         </div>
       `;
     } else if (this._installState.state === FlashStateType.ERROR) {
-      heading = "Installation failed";
+      heading = "Instalace se nezdařila";
       content = html`
         <ewt-page-message
           slot="content"
@@ -691,7 +697,7 @@ export class EwtInstallDialog extends LitElement {
               this._state = "DASHBOARD";
             }}
           >
-            Back
+            Zpět
           </ew-text-button>
         </div>
       `;
@@ -713,7 +719,7 @@ export class EwtInstallDialog extends LitElement {
             await this.shadowRoot!.querySelector("ewt-console")!.reset();
           }}
         >
-          Reset Device
+          Restartovat zařízení
         </ew-text-button>
         <ew-text-button
           @click=${() => {
@@ -725,7 +731,7 @@ export class EwtInstallDialog extends LitElement {
             this.shadowRoot!.querySelector("ewt-console")!.reset();
           }}
         >
-          Download Logs
+          Stáhnout Log
         </ew-text-button>
         <ew-text-button
           @click=${async () => {
@@ -734,7 +740,7 @@ export class EwtInstallDialog extends LitElement {
             this._initialize();
           }}
         >
-          Back
+          Zpět
         </ew-text-button>
       </div>
     `;
@@ -849,7 +855,7 @@ export class EwtInstallDialog extends LitElement {
     if (this.port.readable === null || this.port.writable === null) {
       this._state = "ERROR";
       this._error =
-        "Serial port is not readable/writable. Close any other application using it and try again.";
+        "Nelze číst/zapisovat na Sériový port. Zavřete všechny aplikace, která ho používají, a zkuste to znovu.";
       return;
     }
 
@@ -857,7 +863,7 @@ export class EwtInstallDialog extends LitElement {
       this._manifest = await downloadManifest(this.manifestPath);
     } catch (err: any) {
       this._state = "ERROR";
-      this._error = "Failed to download manifest";
+      this._error = "Chyba při stahování manifestu";
       return;
     }
 
@@ -888,7 +894,7 @@ export class EwtInstallDialog extends LitElement {
       if (err instanceof PortNotReady) {
         this._state = "ERROR";
         this._error =
-          "Serial port is not ready. Close any other application using it and try again.";
+          "Sériový port není připraven. Zavřete všechny aplikace, která ho používají, a zkuste to znovu.";
       } else {
         this._client = null; // not supported
         this.logger.error("Improv initialization failed.", err);

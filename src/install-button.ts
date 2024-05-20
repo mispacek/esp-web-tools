@@ -78,8 +78,8 @@ export class InstallButton extends HTMLElement {
     if (!InstallButton.isSupported || !InstallButton.isAllowed) {
       this.toggleAttribute("install-unsupported", true);
       this.renderRoot.innerHTML = !InstallButton.isAllowed
-        ? "<slot name='not-allowed'>You can only install ESP devices on HTTPS websites or on the localhost.</slot>"
-        : "<slot name='unsupported'>Your browser does not support installing things on ESP devices. Use Google Chrome or Microsoft Edge.</slot>";
+        ? "<slot name='not-allowed'>Zařízení ESP můžete flashovat pouze na webech s HTTPS nebo na localhost.</slot>"
+        : "<slot name='unsupported'>Váš prohlížeč nepodporuje Webserial. Použijte prosím Google Chrome nebo Microsoft Edge.</slot>";
       return;
     }
 
@@ -94,7 +94,7 @@ export class InstallButton extends HTMLElement {
 
     slot.name = "activate";
     const button = document.createElement("button");
-    button.innerText = "Connect";
+    button.innerText = "Nahrát nový firmware do ESP";
     slot.append(button);
     if (
       "adoptedStyleSheets" in Document.prototype &&

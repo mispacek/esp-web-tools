@@ -64,7 +64,7 @@ export const flash = async (
     fireStateEvent({
       state: FlashStateType.ERROR,
       message:
-        "Failed to initialize. Try resetting your device or holding the BOOT button while clicking INSTALL.",
+        "Chyba komunikace s procesorem. Zkuste držet tlačítko BOOT na procesoru a restartovat procesor ručně před stiskuním tlačítka INSTALOVAT.",
       details: { error: FlashError.FAILED_INITIALIZING, details: err },
     });
     await resetTransport(transport);
@@ -77,10 +77,10 @@ export const flash = async (
   if (!esploader.chip.ROM_TEXT) {
     fireStateEvent({
       state: FlashStateType.ERROR,
-      message: `Chip ${chipFamily} is not supported`,
+      message: `Procesor ${chipFamily} není podporován`,
       details: {
         error: FlashError.NOT_SUPPORTED,
-        details: `Chip ${chipFamily} is not supported`,
+        details: `Procesor ${chipFamily} není podporován`,
       },
     });
     await resetTransport(transport);
@@ -90,7 +90,7 @@ export const flash = async (
 
   fireStateEvent({
     state: FlashStateType.INITIALIZING,
-    message: `Initialized. Found ${chipFamily}`,
+    message: `Komunikace s procesorem OK. Nalezen ${chipFamily}`,
     details: { done: true },
   });
 
@@ -99,7 +99,7 @@ export const flash = async (
   if (!build) {
     fireStateEvent({
       state: FlashStateType.ERROR,
-      message: `Your ${chipFamily} board is not supported.`,
+      message: `Deska s procesorem ${chipFamily} není podporována.`,
       details: { error: FlashError.NOT_SUPPORTED, details: chipFamily },
     });
     await resetTransport(transport);
@@ -109,7 +109,7 @@ export const flash = async (
 
   fireStateEvent({
     state: FlashStateType.PREPARING,
-    message: "Preparing installation...",
+    message: "Připravuji data pro instalaci...",
     details: { done: false },
   });
 
@@ -157,27 +157,27 @@ export const flash = async (
 
   fireStateEvent({
     state: FlashStateType.PREPARING,
-    message: "Installation prepared",
+    message: "Data pro instalaci připravena.",
     details: { done: true },
   });
 
   if (eraseFirst) {
     fireStateEvent({
       state: FlashStateType.ERASING,
-      message: "Erasing device...",
+      message: "Mažu paměť procesoru...",
       details: { done: false },
     });
     await esploader.eraseFlash();
     fireStateEvent({
       state: FlashStateType.ERASING,
-      message: "Device erased",
+      message: "Paměť úspěšně vymazána.",
       details: { done: true },
     });
   }
 
   fireStateEvent({
     state: FlashStateType.WRITING,
-    message: `Writing progress: 0%`,
+    message: `Zapisuji nový firmware: 0%`,
     details: {
       bytesTotal: totalSize,
       bytesWritten: 0,
@@ -212,7 +212,7 @@ export const flash = async (
 
         fireStateEvent({
           state: FlashStateType.WRITING,
-          message: `Writing progress: ${newPct}%`,
+          message: `Zapisuji nový firmware: ${newPct}%`,
           details: {
             bytesTotal: totalSize,
             bytesWritten: totalWritten + written,
@@ -234,7 +234,7 @@ export const flash = async (
 
   fireStateEvent({
     state: FlashStateType.WRITING,
-    message: "Writing complete",
+    message: "Nový firmware byl úspěšně nahrán!",
     details: {
       bytesTotal: totalSize,
       bytesWritten: totalWritten,
@@ -250,6 +250,6 @@ export const flash = async (
 
   fireStateEvent({
     state: FlashStateType.FINISHED,
-    message: "All done!",
+    message: "Instalace úspěšně dokončena!",
   });
 };

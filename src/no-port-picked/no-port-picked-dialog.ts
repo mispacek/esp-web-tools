@@ -36,45 +36,44 @@ class EwtNoPortPickedDialog extends LitElement {
 
     return html`
       <ew-dialog open @closed=${this._handleClose}>
-        <div slot="headline">No port selected</div>
+        <div slot="headline">Nebyl vybrán žádný sériový port</div>
         <div slot="content">
           <div>
-            If you didn't select a port because you didn't see your device
-            listed, try the following steps:
+            Pokud jste nevybrali sériový port, protože jste své zařízení nenašli
+            v seznamu, zkuste následující kroky:
           </div>
           <ol>
             <li>
-              Make sure that the device is connected to this computer (the one
-              that runs the browser that shows this website)
+              Ujistěte se, že zařízení je připojeno k tomuto počítači (ten
+              který spouští prohlížeč, který zobrazuje tento web)
             </li>
             <li>
-              Most devices have a tiny light when it is powered on. If yours has
-              one, make sure it is on.
+              Většina zařízení má signalizační LED, která po zapnutí svítí. Ujistěte se, že je vaše zařízení zapnuté.
             </li>
             <li>
-              Make sure that the USB cable you use can be used for data and is
-              not a power-only cable.
+              Ujistěte se, že USB kabel, který používáte, lze použít i pro data a
+              není pouze nabíjecí.
             </li>
             ${OS === "Linux"
               ? html`
                   <li>
-                    If you are using a Linux flavor, make sure that your user is
-                    part of the <code>dialout</code> group so it has permission
+                    Pokud používáte Linux, ujistěte se, že váš uživatel je se součástí
+                    <code>dialout</code> skupiny, takže má povolení
                     to access the device.
                     <code class="block"
                       >sudo usermod -a -G dialout YourUserName</code
                     >
-                    You may need to log out & back in or reboot to activate the
-                    new group access.
+                    Pro aktivaci se možná budete muset odhlásit a znovu přihlásit nebo restartovat
+                    přihlášení ke skupině.
                   </li>
                 `
               : ""}
             <li>
-              Make sure you have the right drivers installed. Below are the
-              drivers for common chips used in ESP devices:
+              Ujistěte se, že máte nainstalované správné ovladače. Níže jsou uvedeny
+              ovladače pro běžné čipy používané v zařízeních ESP:
               <ul>
                 <li>
-                  CP2102 drivers:
+                  CP2102 ovladač:
                   <a
                     href="https://www.silabs.com/developers/usb-to-uart-bridge-vcp-drivers"
                     target="_blank"
@@ -83,7 +82,7 @@ class EwtNoPortPickedDialog extends LitElement {
                   >
                 </li>
                 <li>
-                  CH342, CH343, CH9102 drivers:
+                  CH342, CH343, CH9102 ovladač:
                   <a
                     href="https://www.wch.cn/downloads/CH343SER_ZIP.html"
                     target="_blank"
@@ -97,10 +96,10 @@ class EwtNoPortPickedDialog extends LitElement {
                     >Mac</a
                   >
                   <br />
-                  (download via blue button with ${cloudDownload} icon)
+                  (stáhnout pomocí modrého tlačítka s ${cloudDownload} ikonou)
                 </li>
                 <li>
-                  CH340, CH341 drivers:
+                  CH340, CH341 ovladač:
                   <a
                     href="https://www.wch.cn/downloads/CH341SER_ZIP.html"
                     target="_blank"
@@ -114,7 +113,7 @@ class EwtNoPortPickedDialog extends LitElement {
                     >Mac</a
                   >
                   <br />
-                  (download via blue button with ${cloudDownload} icon)
+                  (stáhnout pomocí modrého tlačítka s ${cloudDownload} ikonou)
                 </li>
               </ul>
             </li>
@@ -123,13 +122,13 @@ class EwtNoPortPickedDialog extends LitElement {
         <div slot="actions">
           ${this.doTryAgain
             ? html`
-                <ew-text-button @click=${this.close}>Cancel</ew-text-button>
+                <ew-text-button @click=${this.close}>Zrušit</ew-text-button>
                 <ew-text-button @click=${this.tryAgain}>
-                  Try Again
+                  Zkusit znovu
                 </ew-text-button>
               `
             : html`
-                <ew-text-button @click=${this.close}>Close</ew-text-button>
+                <ew-text-button @click=${this.close}>Zavřít</ew-text-button>
               `}
         </div>
       </ew-dialog>
